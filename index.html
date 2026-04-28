@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brain Battle - Басты бет</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Brain Battle</h1>
+  <nav>
+    <a href="index.html" class="active">Басты бет</a>
+    <a href="about.html">Біз туралы</a>
+    <a href="services.html">Қызметтер</a>
+    <a href="blog.html">Блог</a>
+    <a href="contact.html">Байланыс</a>
+
+    <span id="authLinks">
+      <a href="login.html">Кіру</a>
+      <a href="register.html">Тіркелу</a>
+    </span>
+
+    <span id="userSection" style="display: none; margin-left: 20px;">
+      <span id="userName" style="color: white; font-weight: bold;"></span>
+      <a href="#" onclick="logout()" style="color: #ff4d4d; margin-left: 10px;">Шығу</a>
+    </span>
+  </nav>
+</header>
+
+<!-- <main>
+    <section class="hero">
+      <h2>Қош келдің!</h2>
+      <p>Бұл Brain Battle — білім жарысы платформасы.</p>
+      <button class="btn">Ойынды бастау</button>
+    </section>
+</main> -->
+
+<main>
+  <section class="hero">
+    <h2 id="title">Brain Battle</h2>
+    <p>Біліміңді тексеріп, басқа ойыншылармен жарыс!</p>
+    <button class="btn" onclick="startGame()">Ойынды бастау</button>
+  </section>
+
+  <section class="pulse-panel-container">
+    <div class="pulse-panel">
+      <div class="activity-status">
+        <span class="pulse-dot"></span> Тікелей эфир
+      </div>
+
+      <div class="pulse-content">
+        <h3>Ойыншылар пульсі</h3>
+        
+        <div class="counter-block">
+          <div id="counter" class="counter-number">1</div>
+          <div class="counter-label">баттлға дайын</div>
+        </div>
+
+        <p class="pulse-description">Қазіргі уақытта платформада белсенді ойыншылар саны.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="gameArea" class="quiz-container" style="display:none;">
+    <div class="quiz-card">
+      <div class="quiz-header">
+        <span class="category-badge">Интеллект</span>
+        <div class="timer-bar"></div>
+      </div>
+      
+      <div class="question-box">
+        <h3 id="question">Сұрақ алу үшін батырманы бас</h3>
+      </div>
+
+      <div class="answer-options">
+        <button class="option-btn">А нұсқасы</button>
+        <button class="option-btn">Ә нұсқасы</button>
+        <button class="option-btn">Б нұсқасы</button>
+        <button class="option-btn">В нұсқасы</button>
+      </div>
+
+      <div class="quiz-footer">
+        <button class="btn main-game-btn" onclick="nextQuestion()">Келесі сұрақ</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Brain Battle</p>
+</footer>
+
+<script src="js/script.js"></script>
+<script>
+  checkUser();
+</script>
+</body>
+</html>

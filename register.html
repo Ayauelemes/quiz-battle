@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brain Battle - Тіркелу</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Brain Battle</h1>
+  <nav>
+    <a href="index.html">Басты бет</a>
+    <a href="about.html">Біз туралы</a>
+    <a href="services.html">Қызметтер</a>
+    <a href="blog.html">Блог</a>
+    <a href="contact.html">Байланыс</a>
+
+    <span id="authLinks">
+      <a href="login.html">Кіру</a>
+      <a href="register.html" class="active">Тіркелу</a>
+    </span>
+
+    <span id="userSection" style="display: none; margin-left: 15px;">
+      <span id="userName" style="color: white; font-weight: bold;"></span>
+      <a href="#" onclick="logout()" style="color: #ff4d4d; margin-left: 10px;">Шығу</a>
+    </span>
+  </nav>
+</header>
+
+<main>
+  <section class="contact">
+    <h2>Тіркелу</h2>
+
+    <form onsubmit="event.preventDefault(); register();">
+      <label for="regName">Атыңыз:</label>
+      <input type="text" id="regName" placeholder="Атыңызды енгізіңіз" required>
+
+      <label for="regEmail">Email:</label>
+      <input type="email" id="regEmail" placeholder="Email енгізіңіз" required>
+
+      <label for="regPassword">Құпиясөз:</label>
+      <input type="password" id="regPassword" placeholder="Кемінде 6 символ" required>
+
+      <button type="submit" class="btn">Тіркелу</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Brain Battle</p>
+</footer>
+
+<script src="js/script.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+
+    if (isLoggedIn === 'true' && storedUser) {
+      document.getElementById('authLinks').style.display = 'none';
+      document.getElementById('userSection').style.display = 'inline';
+      document.getElementById('userName').innerText = storedUser.name;
+    }
+  });
+</script>
+</body>
+</html>
