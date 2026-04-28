@@ -52,12 +52,15 @@ const Reviews = ({ user, refreshNotifications, clearNotificationsLocally }) => {
   };
 
   useEffect(() => {
+    if (!user) return;
     markNotificationsRead();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.id]);
+  }, [user?.id]);
 
   useEffect(() => {
     const loadReviews = async () => {
+      if (!user) return;
+
       const endpoint = user.role === "admin" ? "/feedbacks" : "/my-feedbacks";
       const response = await fetch(`${API_BASE}${endpoint}`, {
         headers: getAuthHeaders(user),

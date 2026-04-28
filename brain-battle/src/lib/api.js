@@ -1,4 +1,6 @@
-export const API_BASE = "http://127.0.0.1:5000/api";
+// Allow overriding the API base URL with an environment variable for deployments.
+// In Create React App use `REACT_APP_API_BASE` (e.g. https://my-backend.example.com/api)
+export const API_BASE = process.env.REACT_APP_API_BASE || "http://127.0.0.1:5000/api";
 
 export const getAuthHeaders = (user) =>
   user

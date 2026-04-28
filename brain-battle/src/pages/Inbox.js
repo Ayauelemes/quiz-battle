@@ -98,6 +98,9 @@ const Inbox = ({ user, chatUsers = [], refreshChatUsers }) => {
   );
   const messageHistoryRef = useRef(null);
 
+  const currentUserId = user?.id ?? null;
+  const currentUserName = user?.name ?? "";
+
   const isTablet = windowWidth <= 980;
   const isMobile = windowWidth <= 720;
 
@@ -112,7 +115,7 @@ const Inbox = ({ user, chatUsers = [], refreshChatUsers }) => {
   }, []);
 
   useEffect(() => {
-    if (!selectedUserId) {
+    if (!selectedUserId || !user) {
       setMessages([]);
       return;
     }
@@ -120,7 +123,7 @@ const Inbox = ({ user, chatUsers = [], refreshChatUsers }) => {
     const store = readChatStore();
     const key = getConversationKey(user.id, selectedUserId);
     setMessages(store[key] || []);
-  }, [selectedUserId, user.id]);
+  }, [selectedUserId, user?.id]);
 
   useEffect(() => {
     if (!messageHistoryRef.current) {
@@ -134,7 +137,7 @@ const Inbox = ({ user, chatUsers = [], refreshChatUsers }) => {
 
     return [...chatUsers]
       .map((chatUser) => {
-        const conversation = store[getConversationKey(user.id, chatUser.id)] || [];
+        const conversation = user ? store[getConversationKey(user.id, chatUser.id)] || [] : [];
         const lastMessage = conversation[conversation.length - 1] || null;
 
         return {
@@ -152,7 +155,7 @@ const Inbox = ({ user, chatUsers = [], refreshChatUsers }) => {
         }
         return a.name.localeCompare(b.name, "kk");
       });
-  }, [chatUsers, user.id]);
+  }, [chatUsers, user?.id]);
 
   const selectedChatUser =
     chatUsersWithMeta.find((item) => String(item.id) === String(selectedUserId)) || null;
@@ -162,6 +165,11 @@ const Inbox = ({ user, chatUsers = [], refreshChatUsers }) => {
   const sendMessage = (e) => {
     e.preventDefault();
     setError("");
+
+    if (!user) {
+      setError("Аутентификация қажет");
+      return;
+    }
 
     const normalizedText = messageText.trim();
     if (!selectedUserId) {
@@ -346,48 +354,39 @@ const Inbox = ({ user, chatUsers = [], refreshChatUsers }) => {
               ) : messages.length === 0 ? (
                 <p style={styles.text}>Хабарлама тарихы жоқ.</p>
               ) : (
-                messages.map((item) => {
-                  const avatarTheme = getAvatarTheme(
-                    item.senderId === user.id ? user.name : item.senderName
-                  );
+                  messages.map((item) => {
+                    const isOwn = item.senderId === currentUserId;
+                    const avatarTheme = getAvatarTheme(isOwn ? currentUserName : item.senderName);
 
-                  return (
-                    <div
-                      key={item.id}
-                      style={item.senderId === user.id ? styles.messageOwn : styles.messageOther}
-                    >
-                      <div style={styles.messageTopRow}>
-                        <div style={styles.messageHeadInline}>
-                          <div
-                            style={{
-                              ...(item.senderId === user.id
-                                ? styles.messageAvatarOwn
-                                : styles.messageAvatarOther),
-                              background: avatarTheme.background,
-                              color: avatarTheme.textColor,
-                            }}
-                          >
-                            {getAvatarText(
-                              item.senderId === user.id ? user.name : item.senderName
-                            )}
+                    return (
+                      <div
+                        key={item.id}
+                        style={isOwn ? styles.messageOwn : styles.messageOther}
+                      >
+                        <div style={styles.messageTopRow}>
+                          <div style={styles.messageHeadInline}>
+                            <div
+                              style={{
+                                ...(isOwn ? styles.messageAvatarOwn : styles.messageAvatarOther),
+                                background: avatarTheme.background,
+                                color: avatarTheme.textColor,
+                              }}
+                            >
+                              {getAvatarText(isOwn ? currentUserName : item.senderName)}
+                            </div>
+                            <span
+                              style={isOwn ? styles.senderChipOwn : styles.senderChipOther}
+                            >
+                              {isOwn ? "Сіз" : item.senderName || "Қолданушы"}
+                            </span>
                           </div>
-                          <span
-                            style={
-                              item.senderId === user.id
-                                ? styles.senderChipOwn
-                                : styles.senderChipOther
-                            }
-                          >
-                            {item.senderId === user.id ? "Сіз" : item.senderName || "Қолданушы"}
-                          </span>
                         </div>
-                      </div>
 
-                      <p style={styles.messageText}>{item.messageText}</p>
-                      <span style={styles.dateText}>{formatDateTime(item.createdAt)}</span>
-                    </div>
-                  );
-                })
+                        <p style={styles.messageText}>{item.messageText}</p>
+                        <span style={styles.dateText}>{formatDateTime(item.createdAt)}</span>
+                      </div>
+                    );
+                  })
               )}
             </div>
 
