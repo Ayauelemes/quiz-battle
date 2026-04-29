@@ -143,6 +143,11 @@ const ensureSchema = async () => {
   `);
 };
 
+app.get("/", (_req, res) => {
+  // Simple root route to make integration tests easier
+  return res.status(200).send("OK");
+});
+
 app.get("/api/health", async (_req, res) => {
   try {
     await pool.query("SELECT 1");
@@ -652,10 +657,16 @@ const startServer = async () => {
     server.on("error", (error) => {
       console.error("Backend іске қосылу қатесі:", error);
     });
+    return server;
   } catch (error) {
     console.error("Schema дайындау қатесі:", error);
     process.exit(1);
   }
 };
 
-startServer();
+// If run directly, start the server. When required by tests, export the app
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = app;
