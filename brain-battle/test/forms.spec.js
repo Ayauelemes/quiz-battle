@@ -12,7 +12,6 @@ describe('Формаларды тестілеу ', () => {
       </MemoryRouter>
     );
 
-  // Найдем заголовок формы
   expect(screen.getByRole('heading', { name: 'Тіркелу' })).to.exist;
     expect(screen.getByPlaceholderText('Аты-жөні')).to.exist;
     expect(screen.getByPlaceholderText('Email')).to.exist;
@@ -20,7 +19,6 @@ describe('Формаларды тестілеу ', () => {
 
   const submit = screen.getAllByText('Тіркелу').find((el) => el.tagName === 'BUTTON');
   fireEvent.click(submit);
-  // jsdom не выполняет native required в полной мере, но кнопка должна быть интерактивной
   expect(submit).to.exist;
   });
 });

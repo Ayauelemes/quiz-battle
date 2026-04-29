@@ -4,6 +4,9 @@ const { Pool } = require("pg");
 
 const app = express();
 const port = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 const host = "127.0.0.1";
 
 app.use(cors());
@@ -15,6 +18,10 @@ const pool = new Pool({
   database: process.env.DB_NAME || "brain_battle",
   password: process.env.DB_PASSWORD || "1234",
   port: Number(process.env.DB_PORT) || 5432,
+  connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 const allowedRoles = ["admin", "player", "moderator"];
@@ -670,3 +677,4 @@ if (require.main === module) {
 }
 
 module.exports = app;
+
